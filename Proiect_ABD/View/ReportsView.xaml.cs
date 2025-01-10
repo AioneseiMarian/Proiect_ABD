@@ -10,20 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Proiect_ABD
+namespace Proiect_ABD.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ReportsView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ReportsView : Window
     {
-        public MainWindow()
+        public ReportsView()
         {
             InitializeComponent();
-            DataContext = new View_Model.MainWindowViewModel();
         }
     }
 }
