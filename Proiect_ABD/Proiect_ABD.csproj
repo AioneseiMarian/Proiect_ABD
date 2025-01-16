@@ -71,45 +71,59 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Roles.cs" />
+    <Compile Include="Model\Users.cs" />
+    <Compile Include="Proiect_ABD.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Proiect_ABD.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\BoolToVisibilityConverter.cs" />
+    <Compile Include="Utils\NavigationClass.cs" />
+    <Compile Include="Utils\UserSession.cs" />
+    <Compile Include="View\AddUserView.xaml.cs">
+      <DependentUpon>AddUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EquipmentView.xaml.cs">
+      <DependentUpon>EquipmentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MaintenanceView.xaml.cs">
+      <DependentUpon>MaintenanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ManageUsersView.xaml.cs">
+      <DependentUpon>ManageUsersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ReportsView.xaml.cs">
+      <DependentUpon>ReportsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View_Model\AddUserViewModel.cs" />
     <Compile Include="View_Model\Command.cs" />
     <Compile Include="View_Model\DashboardViewModel.cs" />
     <Compile Include="View_Model\EquipmentViewModel.cs" />
     <Compile Include="View_Model\LoginViewModel.cs" />
     <Compile Include="View_Model\MaintenanceViewModel.cs" />
-    <Compile Include="View_Model\MainWindowViewModel.cs" />
+    <Compile Include="View_Model\ManageUsersViewModel.cs" />
     <Compile Include="View_Model\RegisterViewModel.cs" />
     <Compile Include="View_Model\ReportsViewModel.cs" />
+    <Compile Include="View_Model\RolesViewModel.cs" />
     <Compile Include="View_Model\ViewModelBase.cs" />
     <Compile Include="View\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EquipmentView.xaml.cs">
-      <DependentUpon>EquipmentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\MaintenanceView.xaml.cs">
-      <DependentUpon>MaintenanceView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ReportsView.xaml.cs">
-      <DependentUpon>ReportsView.xaml</DependentUpon>
-    </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="View\AddUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,11 +136,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RegisterView.xaml">
+    <Page Include="View\ManageUsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ReportsView.xaml">
+    <Page Include="View\RegisterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,16 +148,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ReportsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Equipment.cs" />
-    <Compile Include="Model\EquipmentDB.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EquipmentDB.dbml</DependentUpon>
-    </Compile>
+    <Compile Include="Model\Equipments.cs" />
     <Compile Include="Model\MaintenanceRecord.cs" />
-    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -161,15 +173,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Model\EquipmentDB.dbml">
+    <None Include="packages.config" />
+    <None Include="Proiect_ABD.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>EquipmentDB.designer.cs</LastGenOutput>
+      <LastGenOutput>Proiect_ABD.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Model\EquipmentDB.dbml.layout">
-      <DependentUpon>EquipmentDB.dbml</DependentUpon>
+    <None Include="Proiect_ABD.dbml.layout">
+      <DependentUpon>Proiect_ABD.dbml</DependentUpon>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -178,7 +190,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Proiect.sql" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>

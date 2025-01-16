@@ -33,5 +33,27 @@ namespace Proiect_ABD.Properties {
                 return ((string)(this["MonitorizareEchipamenteConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=HEKARMEN\\SQLEXPRESS;Initial Catalog=Proiect_ABD;Integrated Security=T" +
+            "rue;TrustServerCertificate=True")]
+        public string Proiect_ABDConnectionString {
+            get {
+                return ((string)(this["Proiect_ABDConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=HEKARMEN\\SQLEXPRESS;Initial Catalog=Proiect_ABD;Integrated Security=T" +
+            "rue;Encrypt=True;TrustServerCertificate=True")]
+        public string Proiect_ABDConnectionString1 {
+            get {
+                return ((string)(this["Proiect_ABDConnectionString1"]));
+            }
+        }
     }
 }

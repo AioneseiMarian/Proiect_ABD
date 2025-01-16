@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proiect_ABD.View_Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,20 +11,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using Proiect_ABD.View_Model;
 
 namespace Proiect_ABD.View
 {
     /// <summary>
-    /// Interaction logic for EquipmentView.xaml
+    /// Interaction logic for AddUserView.xaml
     /// </summary>
-    public partial class EquipmentView : Page
+    public partial class AddUserView : Window
     {
-        public EquipmentView()
+        public AddUserView()
         {
             InitializeComponent();
+        }
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is AddUserViewModel viewModel)
+            {
+                viewModel.NewUser.Password = ((PasswordBox)sender).Password;
+            }
         }
     }
 }

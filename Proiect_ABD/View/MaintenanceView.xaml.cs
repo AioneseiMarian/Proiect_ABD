@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Proiect_ABD.View
@@ -17,7 +18,7 @@ namespace Proiect_ABD.View
     /// <summary>
     /// Interaction logic for MaintenanceView.xaml
     /// </summary>
-    public partial class MaintenanceView : Window
+    public partial class MaintenanceView : Page
     {
         public MaintenanceView()
         {

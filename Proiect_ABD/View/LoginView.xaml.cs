@@ -1,4 +1,5 @@
-﻿using Proiect_ABD.View_Model;
+﻿using Proiect_ABD.Utils;
+using Proiect_ABD.View_Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,27 +18,31 @@ namespace Proiect_ABD.View
 {
     public partial class LoginView : Window
     {
+        static bool IsAppStart = true;
         public LoginView()
         {
             InitializeComponent();
-            DataContext = new View_Model.LoginViewModel();
-            ((View_Model.LoginViewModel)DataContext).RequestClose += ViewModel_RequestClose;
+
+            if (IsAppStart)
+            {
+                NavigationClass.ActiveWindow = this;
+                IsAppStart = false;
+            }
+
+            DataContext = new LoginViewModel();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (DataContext is View_Model.LoginViewModel viewModel)
             {
-                viewModel.UpdatePassword(((PasswordBox)sender).Password);
+                var passwordBox = sender as PasswordBox;
+                if (passwordBox != null)
+                {
+                    // Actualizarea proprietății Password din ViewModel
+                    viewModel.Password = passwordBox.Password;
+                }
             }
-        }
-
-
-        private void ViewModel_RequestClose(LoginViewModel sender)
-        {
-            MessageBox.Show("RequestClose a fost apelat\n");
-            DialogResult = sender.IsAuthenticated;
-            Close();
         }
     }
 }

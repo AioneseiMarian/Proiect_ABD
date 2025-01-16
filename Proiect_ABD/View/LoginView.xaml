@@ -19,7 +19,7 @@
 
         <!-- Primul rând: Username -->
         <Label x:Name="lbl_username" Content="Username" Grid.Row="0" Grid.Column="0" Margin="10" FontSize="20" HorizontalAlignment="Center"/>
-        <TextBox x:Name="txtUsername" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Margin="10" Width="306" HorizontalAlignment="Center"/>
+        <TextBox x:Name="txtUsername" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Margin="10" Width="306" HorizontalAlignment="Center" FontSize="24"/>
 
         <!-- Al doilea rând: Password -->
         <Label x:Name="lbl_password" Content="Password" Grid.Row="1" Grid.Column="0" Margin="10" FontSize="20" HorizontalAlignment="Center"/>

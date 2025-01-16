@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using Proiect_ABD.View_Model;
+
 namespace Proiect_ABD.View
 {
     public partial class DashboardView : Window
@@ -20,17 +22,10 @@ namespace Proiect_ABD.View
         {
             InitializeComponent();
 
-            if (DataContext is View_Model.DashboardViewModel viewModel)
-            {
-                viewModel.RequestLogout += OnRequestLogout;
-            }
         }
 
-        private void OnRequestLogout()
-        {
-            MessageBox.Show("Deconectare reușită.");
-            DialogResult = false; // Înapoi la LoginView
-            Close();
-        }
+
+
+
     }
 }

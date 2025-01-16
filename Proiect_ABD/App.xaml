@@ -2,10 +2,32 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Proiect_ABD"
-             StartupUri="MainWindow.xaml"
-             ShutdownMode="OnExplicitShutdown">
+             xmlns:utils="clr-namespace:Proiect_ABD.Utils"
+             xmlns:View_Model="clr-namespace:Proiect_ABD.View_Model"
+             xmlns:View="clr-namespace:Proiect_ABD.View"
+             StartupUri="./View/LoginView.xaml">
 
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <utils:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+            <DataTemplate DataType="{x:Type View_Model:MaintenanceViewModel}">
+                <View:MaintenanceView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type View_Model:EquipmentViewModel}">
+                <View:EquipmentView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type View_Model:ReportsViewModel}">
+                <View:ReportsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type View_Model:ManageUsersViewModel}">
+                <View:ManageUsersView/>
+            </DataTemplate>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
+

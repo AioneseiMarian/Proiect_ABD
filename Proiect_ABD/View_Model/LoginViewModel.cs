@@ -1,80 +1,80 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
+using Proiect_ABD.View;
+using Proiect_ABD.Utils;
+using Proiect_ABD.Model;
 
 namespace Proiect_ABD.View_Model
 {
-    public class LoginViewModel : ViewModelBase
+    public class LoginViewModel : INotifyPropertyChanged
     {
         private string _username;
         private string _password;
-        public event Action<LoginViewModel> RequestClose;
-        private bool _isAuthenticated = false;
-
-        public ICommand LoginCommand { get; }
-        public ICommand GoToRegisterCommand { get; }
 
         public string Username
         {
             get => _username;
-            set => Set(ref _username, value);
+            set
+            {
+                _username = value;
+                OnPropertyChanged(nameof(Username));
+            }
         }
-
         public string Password
         {
             get => _password;
-            set => Set(ref _password, value);
+            set
+            {
+                _password = value;
+                OnPropertyChanged(nameof(Password));
+            }
         }
 
+        public ICommand LoginCommand { get; }
+        public ICommand GoToRegisterCommand { get; }
 
         public LoginViewModel()
         {
-            LoginCommand = new Command(Login, CanLogin);
-            GoToRegisterCommand = new Command(GoToRegister);
+            LoginCommand = new RelayCommand(ExecuteLogin);
+            GoToRegisterCommand = new RelayCommand(ExecuteGoToRegister);
+
+   
         }
 
-        private bool CanLogin()
+        private void ExecuteLogin()
         {
-            return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
-        }
-
-        public bool IsAuthenticated
-        {
-            get => _isAuthenticated;
-            set 
+            Users user = new Users().GetUserByEmailPassword(Username, Password);
+            if ((new Users ()).GetUserByEmailPassword(Username, Password) != null)
             {
-                _isAuthenticated = value;
-                OnPropertyChanged(nameof(IsAuthenticated));
-            }
-        }
+                // Navigare la DashboardView
+                //DashboardView dashboardView = new DashboardView();
+                //Application.Current.MainWindow.Close();
+                //Application.Current.MainWindow = dashboardView;
+                //Application.Current.MainWindow.Show();
 
-        private void GoToRegister()
-        {
-            RequestClose?.Invoke(this);
-            new View.RegisterView().Show();
-        }
-        private void Login()
-        {
-            // Exemplu simplu de autentificare
-            if (Username == "admin" && Password == "password")
-            {
-                IsAuthenticated = true;
-                RequestClose?.Invoke(this);           // Închide fereastra de login
+                NavigationClass.NavigateTo("DashboardView");
             }
             else
             {
-                MessageBox.Show("Autentificare eșuată.");
+                MessageBox.Show("Username sau parola incorecte!", "Eroare", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        public void UpdatePassword(string password)
+        private void ExecuteGoToRegister()
         {
-            Password = password;
-            ((Command)LoginCommand).RaiseCanExecuteChanged();
+            // Navigare la RegisterView
+            RegisterView registerView = new RegisterView();
+            Application.Current.MainWindow.Content = registerView;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
