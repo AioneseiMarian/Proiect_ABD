@@ -19,10 +19,6 @@
                 <View:EquipmentView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type View_Model:ReportsViewModel}">
-                <View:ReportsView/>
-            </DataTemplate>
-
             <DataTemplate DataType="{x:Type View_Model:ManageUsersViewModel}">
                 <View:ManageUsersView/>
             </DataTemplate>

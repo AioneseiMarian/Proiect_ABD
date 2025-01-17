@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Proiect_ABD.Model;
+using Proiect_ABD.View_Model;
 
 namespace Proiect_ABD.Utils
 {
     public class NavigationClass
     {
+        public static Users CurrentUser { get; set; }
         public static Window ActiveWindow { get; set; }
         public static Window PrevWindow { get; set; }
 
@@ -53,18 +56,11 @@ namespace Proiect_ABD.Utils
                 case "LoginView":
                     return new LoginView();
                 case "DashboardView":
-                    return new DashboardView();
-                //case "ErrorWindow":
-                //    if (errorMessage != null)
-                //    {
-                //        return new ErrorWindow(errorMessage);
-                //    }
-                //    return null;
-
-                //case "AdminWindow":
-                //    return new AdminWindow();
-                //case "MainWindow":
-                //    return new MainWindow();
+                    var dashboardView = new DashboardView
+                    {
+                        DataContext = new DashboardViewModel(CurrentUser)
+                    };
+                    return dashboardView;
                 default:
                     return null;
             }

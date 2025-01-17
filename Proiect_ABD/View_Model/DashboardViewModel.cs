@@ -10,14 +10,57 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using Proiect_ABD.Model;
+
 namespace Proiect_ABD.View_Model
 {
     public class DashboardViewModel : ViewModelBase , INotifyPropertyChanged
     {
+        public Roles UserRole { get; set; }
+        private bool canViewMaintenance;
+
+        public bool CanViewMaintenance
+        {
+            get { return canViewMaintenance; }
+            set 
+            {
+                if (canViewMaintenance != value)
+                {
+                    canViewMaintenance = value;
+                    OnPropertyChanged(nameof(CanViewMaintenance));
+                }
+            }
+        }
+
+
+
+        private bool _isAdmin;
+        public bool IsAdmin
+        {
+            get => _isAdmin;
+            set
+            {
+                if (_isAdmin != value)
+                {
+                    _isAdmin = value;
+                    OnPropertyChanged(nameof(IsAdmin));
+                }
+            }
+        }
+
         private object _currentView;
-        //public event Action RequestLogout;
-        public bool IsAdmin { get; set; }
-        public bool CanViewReports { get; set; }
+        private Users _currentUser;
+
+        public Users CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                _currentUser = value;
+                OnPropertyChanged(nameof(CurrentUser));
+                OnPropertyChanged(nameof(UserRole));
+            }
+        }
 
         public ICommand NavigateCommand { get; }
         public ICommand LogoutCommand { get; }
@@ -32,38 +75,56 @@ namespace Proiect_ABD.View_Model
             }
         }
 
-        public DashboardViewModel()
+        public DashboardViewModel() : this(null) { }
+
+        public DashboardViewModel(Users user)
         {
             // Inițial, afișează EquipmentView
+            _currentUser = user;
+            
+            switch (user.Role.Name)
+            {
+                case "Administrator":
+                    IsAdmin = true;
+                    CanViewMaintenance = true;
+                    break;
+                case "Manager":
+                    IsAdmin = false;
+                    CanViewMaintenance = true;
+                    break;
+                case "Mentenanta":
+                    IsAdmin = false;
+                    CanViewMaintenance = true;
+                    break;
+                case "Tehnician":
+                    IsAdmin = false;
+                    CanViewMaintenance = false;
+                    break;
+
+            }
             NavigateCommand = new RelayCommand<string>(ExecuteNavigate);
             LogoutCommand = new RelayCommand(ExecuteLogout);
-            var userRole = GetUserRole(); // Replace with your actual role-fetching logic
-            IsAdmin = userRole == "Admin";
-            CanViewReports = userRole == "Admin" || userRole == "Manager";
 
-            CurrentView = new EquipmentViewModel();
+            CurrentView = new EquipmentViewModel(CurrentUser);
         }
 
-        public string GetUserRole()     //TO BE MODIFIED
-        {
-            return "Admin";
-        }
+
 
         private void ExecuteNavigate(string viewName)
         {
             switch (viewName)
             {
                 case "EquipmentView":
-                    CurrentView = new EquipmentViewModel();
+                    CurrentView = new EquipmentViewModel(CurrentUser);
                     break;
                 case "ManageUsersView":
                     CurrentView = new ManageUsersViewModel();
                     break;
-                case "ReportsView":
-                    CurrentView = new ReportsViewModel();
-                    break;
                 case "MaintenanceView":
-                    CurrentView = new MaintenanceViewModel();
+                    CurrentView = new MaintenanceViewModel(CurrentUser);
+                    break;
+                default:
+                    MessageBox.Show("Invalid view name");
                     break;
             }
         }

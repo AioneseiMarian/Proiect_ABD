@@ -75,7 +75,12 @@ namespace Proiect_ABD.View_Model
         {
             if (user != null)
             {
-                MessageBox.Show($"Change password for user: {user.Name}");
+                var changePasswordWindow = new ChangePasswordView
+                {
+                    DataContext = new ChangePasswordViewModel(user)
+                };
+
+                changePasswordWindow.ShowDialog();
             }
         }
 
@@ -85,6 +90,7 @@ namespace Proiect_ABD.View_Model
             {
                 UsersList.Remove(user);
                 MessageBox.Show($"User {user.Name} deleted.");
+                (new Users()).DeleteUser(user);
             }
         }
 

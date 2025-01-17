@@ -1,27 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Proiect_ABD" Class="Proiect_ABDDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=HEKARMEN\SQLEXPRESS;Initial Catalog=Proiect_ABD;Integrated Security=True;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="Proiect_ABD.Properties.Settings" SettingsPropertyName="Proiect_ABDConnectionString1" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Equipments" Member="Equipments">
-    <Type Name="Equipment">
-      <Column Name="[_id]" Member="_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="[_name]" Member="_name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="[_status]" Member="_status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="[_last_update]" Member="_last_update" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Equipment_Maintenance" Member="Maintenances" ThisKey="_id" OtherKey="_equipment_id" Type="Maintenance" />
-      <Association Name="Equipment_Report" Member="Reports" ThisKey="_id" OtherKey="_equipment_id" Type="Report" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Maintenance" Member="Maintenances">
-    <Type Name="Maintenance">
-      <Column Name="[_maintenance_id]" Member="_maintenance_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="[_equipment_id]" Member="_equipment_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="[_performed_by]" Member="_performed_by" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="[_description]" Member="_description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="[_performed_at]" Member="_performed_at" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="[_status]" Member="_status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Association Name="Equipment_Maintenance" Member="Equipment" ThisKey="_equipment_id" OtherKey="_id" Type="Equipment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="User_Maintenance" Member="User" ThisKey="_performed_by" OtherKey="_id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Reports" Member="Reports">
     <Type Name="Report">
       <Column Name="[_report_id]" Member="_report_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -30,8 +8,8 @@
       <Column Name="[_created_by]" Member="_created_by" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="[_created_at]" Member="_created_at" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="[_equipment_id]" Member="_equipment_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Equipment_Report" Member="Equipment" ThisKey="_equipment_id" OtherKey="_id" Type="Equipment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="User_Report" Member="User" ThisKey="_created_by" OtherKey="_id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Equipment_Report" Member="Equipment" ThisKey="_equipment_id" OtherKey="_id" Type="Equipment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Roles" Member="Roles">
@@ -45,12 +23,34 @@
     <Type Name="User">
       <Column Name="[_id]" Member="_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="[_name]" Member="_name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="[_password]" Member="_password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="[_password]" Member="_password" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="[_email]" Member="_email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="[_role_id]" Member="_role_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="User_Maintenance" Member="Maintenances" ThisKey="_id" OtherKey="_performed_by" Type="Maintenance" />
       <Association Name="User_Report" Member="Reports" ThisKey="_id" OtherKey="_created_by" Type="Report" />
+      <Association Name="User_Maintenance" Member="Maintenances" ThisKey="_id" OtherKey="_performed_by" Type="Maintenance" />
       <Association Name="Role_User" Member="Role" ThisKey="_role_id" OtherKey="_role_id" Type="Role" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Maintenance" Member="Maintenances">
+    <Type Name="Maintenance">
+      <Column Name="[_maintenance_id]" Member="_maintenance_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="[_equipment_id]" Member="_equipment_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[_performed_by]" Member="_performed_by" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[_description]" Member="_description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="[_performed_at]" Member="_performed_at" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="[_status]" Member="_status" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Association Name="User_Maintenance" Member="User" ThisKey="_performed_by" OtherKey="_id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Equipment_Maintenance" Member="Equipment" ThisKey="_equipment_id" OtherKey="_id" Type="Equipment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Equipments" Member="Equipments">
+    <Type Name="Equipment">
+      <Column Name="[_id]" Member="_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="[_name]" Member="_name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="[_status]" Member="_status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="[_last_update]" Member="_last_update" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Equipment_Report" Member="Reports" ThisKey="_id" OtherKey="_equipment_id" Type="Report" />
+      <Association Name="Equipment_Maintenance" Member="Maintenances" ThisKey="_id" OtherKey="_equipment_id" Type="Maintenance" />
     </Type>
   </Table>
 </Database>

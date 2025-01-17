@@ -28,7 +28,6 @@
         <!-- Al treilea rând: Butoane -->
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
             <Button x:Name="lbl_login" Content="Login" Command="{Binding LoginCommand}" Width="110" Margin="5"/>
-            <Button x:Name="lbl_register" Content="Register" Command="{Binding GoToRegisterCommand}" Width="105" Margin="5"/>
         </StackPanel>
     </Grid>
 </Window>

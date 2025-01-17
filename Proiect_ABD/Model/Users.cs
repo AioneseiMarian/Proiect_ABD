@@ -123,9 +123,20 @@ namespace Proiect_ABD.Model
             return users;
         }
 
+        public Users GetUserById(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u._id == id);
+            return new Users
+            {
+                Id = user._id,
+                Name = user._name,
+                Email = user._email,
+                Role = new Roles().GetRoleById(user._role_id)
+            };
+        }
 
 
-        static string HashPassword(string password)
+        public static string HashPassword(string password)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
             using (SHA256 sha256 = SHA256.Create())
@@ -139,6 +150,17 @@ namespace Proiect_ABD.Model
                 }
 
                 return hashString.ToString();
+            }
+        }
+
+        public void DeleteUser(Users user)
+        {
+            var context = new Proiect_ABDDataContext();
+            var dbUser = context.Users.FirstOrDefault(u => u._id == user.Id);
+            if (dbUser != null)
+            {
+                context.Users.DeleteOnSubmit(dbUser);
+                context.SubmitChanges();
             }
         }
     }

@@ -9,64 +9,62 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="EquipmentView">
 
-    <Page.DataContext>
-        <vm:EquipmentViewModel />
-    </Page.DataContext>
 
     <Grid>
-        <DockPanel>
+        <DockPanel LastChildFill="True">
             <!-- Header-ul -->
-            <Grid DockPanel.Dock="Top">
+            <Grid DockPanel.Dock="Top" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="1.5*" />
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0">
-                    <TextBlock Text="Id" FontWeight="Bold" TextAlignment="Center" />
-                </Border>
-                <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
                     <TextBlock Text="Name" FontWeight="Bold" TextAlignment="Center" />
                 </Border>
-                <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,1,0">
+                <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
                     <TextBlock Text="Status" FontWeight="Bold" TextAlignment="Center" />
                 </Border>
-                <Border Grid.Column="3">
+                <Border Grid.Column="2">
                     <TextBlock Text="Last Update" FontWeight="Bold" TextAlignment="Center" />
                 </Border>
             </Grid>
 
-            <!-- ListBox-ul -->
-            <ListBox ItemsSource="{Binding EquipmentList}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <!-- ListBox-ul fullscreen -->
+            <ListBox ItemsSource="{Binding AvailableEquipments}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="1.5*" />
                             </Grid.ColumnDefinitions>
 
-                            <!-- Id -->
-                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0">
-                                <TextBlock Text="{Binding Id}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
-                            </Border>
-
                             <!-- Name (Editable) -->
-                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
+                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0">
                                 <TextBox Text="{Binding Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
                             </Border>
 
-                            <!-- Status (Editable) -->
-                            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,1,0">
-                                <TextBox Text="{Binding Status}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
+                            <!-- Status with Button -->
+                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0">
+                                    <!--<ComboBox SelectedItem="{Binding Status}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,0">
+                                        <ComboBox.ItemsSource>
+                                            <x:Array Type="sys:String" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                                                <sys:String>disponibil</sys:String>
+                                                <sys:String>indisponibil</sys:String>
+                                                <sys:String>in mentenanta</sys:String>
+                                            </x:Array>
+                                        </ComboBox.ItemsSource>
+                                    </ComboBox>-->
+                                    <Button Content="Trimite la mentenanta" Margin="5,0" Command="{Binding DataContext.SendToMaintenanceCommand, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}" />
+                                </StackPanel>
                             </Border>
 
                             <!-- Last Update -->
-                            <Border Grid.Column="3">
+                            <Border Grid.Column="2">
                                 <TextBlock Text="{Binding LastUpdate}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
                             </Border>
                         </Grid>
@@ -74,6 +72,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
+
+        <!-- Save Button -->
         <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" />
     </Grid>
 </Page>

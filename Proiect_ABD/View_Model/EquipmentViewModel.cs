@@ -26,6 +26,21 @@ namespace Proiect_ABD.View_Model
             }
         }
 
+        private ObservableCollection<Equipments> availableEquipments;
+        public ObservableCollection<Equipments> AvailableEquipments
+        {
+            get { return availableEquipments; }
+            set { availableEquipments = value; OnPropertyChanged("AvailableEquipments"); }
+        }
+
+        private Users currentUser;
+        public Users CurrentUser
+        {
+            get { return currentUser; }
+            set { currentUser = value; OnPropertyChanged("CurrentUser"); }
+        }
+
+
         private ObservableCollection<Equipments> equipmentList;
         public ObservableCollection<Equipments> EquipmentList
         {
@@ -33,25 +48,55 @@ namespace Proiect_ABD.View_Model
             set { equipmentList = value; OnPropertyChanged("EquipmentList"); }
         }
 
+        public ICommand SendToMaintenanceCommand { get; }
         public ICommand SaveCommand { get; }
 
-        public EquipmentViewModel()
+        public EquipmentViewModel() : this(null) { }
+        public EquipmentViewModel(Users user)
         {
+            CurrentUser = user;
             equipmentList = (new Equipments()).GetAllEquipments();
+            availableEquipments = GetAvailableEquipments();
 
+            SendToMaintenanceCommand = new RelayCommand<Equipments>(Equipments => SendToMaintenance(Equipments));
             SaveCommand = new RelayCommand(SaveChanges);
+        }
+
+        private void SendToMaintenance(Equipments equipment)
+        {
+            equipment.Status = "indisponibil";
+            UpdateEquipmentInDatabase(equipment);
+            availableEquipments.Remove(equipment);
+
+            (new MaintenanceRecord()).AddMaintenanceRecord(
+                    new MaintenanceRecord
+                    {
+                        EquipmentId = equipment.Id,
+                        Date = DateTime.Now,
+                        Description = "Sent to maintenance",
+                        PerformedBy = CurrentUser
+                    }
+                );
+
+        }
+
+        private ObservableCollection<Equipments> GetAvailableEquipments()
+        {
+            return new ObservableCollection<Equipments>(EquipmentList.Where(e => e.Status == "disponibil"));
+        }
+
+        private ObservableCollection<Equipments> GetUnavailableEquipments()
+        {
+            return new ObservableCollection<Equipments>(EquipmentList.Where(e => e.Status == "indisponibil"));
         }
 
         private void SaveChanges()
         {
-            // Here, you would save the changes to the database
             foreach (var equipment in EquipmentList)
             {
-                // Assuming you have a method to update the equipment in the database
                 UpdateEquipmentInDatabase(equipment);
             }
 
-            // Optionally, show a message or update UI to indicate success
         }
 
         private void UpdateEquipmentInDatabase(Equipments equipment)

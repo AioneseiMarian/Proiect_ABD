@@ -4,19 +4,17 @@
         xmlns:vm="clr-namespace:Proiect_ABD.View_Model"
         Title="Dashboard" Height="600" Width="900"
         WindowState="Maximized" >
-    <Window.DataContext>
-        <vm:DashboardViewModel />
-    </Window.DataContext>
+
+
     <DockPanel>
         <!-- Sectiunea de butoane in partea stanga -->
         <Border DockPanel.Dock="Left" Background="#F0F0F0" Width="200">
             <StackPanel Margin="10">
                 <Button Content="Echipamente" Command="{Binding NavigateCommand}" CommandParameter="EquipmentView" Margin="0,5,0,5" />
-                
-                <Button Content="Mentenanță" Command="{Binding NavigateCommand}" CommandParameter="MaintenanceView" Margin="0,5,0,5" />
-                
-                <Button Content="Rapoarte" Command="{Binding NavigateCommand}" CommandParameter="ReportsView" Margin="0,5,0,5" />
-                
+
+                <Button Content="Mentenanță" Command="{Binding NavigateCommand}" CommandParameter="MaintenanceView" Margin="0,5,0,5"
+                        Visibility="{Binding CanViewMaintenance, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                 <Button Content="Gestionare Utilizatori" 
                         Command="{Binding NavigateCommand}" 
                         CommandParameter="ManageUsersView" 
@@ -30,11 +28,15 @@
         <!-- Sectiunea principala cu echipamente -->
         <ScrollViewer DockPanel.Dock="Right">
             <Grid>
-                <Frame x:Name="MainFrame" Content="{Binding CurrentView}" NavigationUIVisibility="Hidden" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="31*"/>
+                    <RowDefinition Height="42*"/>
+                </Grid.RowDefinitions>
+                <Frame x:Name="MainFrame" Content="{Binding CurrentView}" NavigationUIVisibility="Hidden" Grid.RowSpan="2" />
 
             </Grid>
         </ScrollViewer>
     </DockPanel>
-    
+
 
 </Window>

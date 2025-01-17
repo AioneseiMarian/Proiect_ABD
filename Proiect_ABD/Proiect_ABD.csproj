@@ -80,9 +80,11 @@
     </Compile>
     <Compile Include="Utils\BoolToVisibilityConverter.cs" />
     <Compile Include="Utils\NavigationClass.cs" />
-    <Compile Include="Utils\UserSession.cs" />
     <Compile Include="View\AddUserView.xaml.cs">
       <DependentUpon>AddUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChangePasswordView.xaml.cs">
+      <DependentUpon>ChangePasswordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EquipmentView.xaml.cs">
       <DependentUpon>EquipmentView.xaml</DependentUpon>
@@ -96,21 +98,14 @@
     <Compile Include="View\ManageUsersView.xaml.cs">
       <DependentUpon>ManageUsersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RegisterView.xaml.cs">
-      <DependentUpon>RegisterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ReportsView.xaml.cs">
-      <DependentUpon>ReportsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View_Model\AddUserViewModel.cs" />
+    <Compile Include="View_Model\ChangePasswordViewModel.cs" />
     <Compile Include="View_Model\Command.cs" />
     <Compile Include="View_Model\DashboardViewModel.cs" />
     <Compile Include="View_Model\EquipmentViewModel.cs" />
     <Compile Include="View_Model\LoginViewModel.cs" />
     <Compile Include="View_Model\MaintenanceViewModel.cs" />
     <Compile Include="View_Model\ManageUsersViewModel.cs" />
-    <Compile Include="View_Model\RegisterViewModel.cs" />
-    <Compile Include="View_Model\ReportsViewModel.cs" />
     <Compile Include="View_Model\RolesViewModel.cs" />
     <Compile Include="View_Model\ViewModelBase.cs" />
     <Compile Include="View\DashboardView.xaml.cs">
@@ -121,6 +116,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\AddUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChangePasswordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -140,15 +139,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RegisterView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\LoginView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ReportsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

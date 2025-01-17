@@ -49,9 +49,9 @@ CREATE TABLE Maintenance (
     _maintenance_id INT PRIMARY KEY IDENTITY,
     _equipment_id INT NOT NULL, -- Equipment being maintained
     _performed_by INT NOT NULL, -- User who performed the maintenance
-    _description NVARCHAR(MAX) NOT NULL, -- Details of the maintenance activity
+    _description NVARCHAR(MAX) -- Details of the maintenance activity
     _performed_at DATETIME NOT NULL DEFAULT GETDATE(),
-    _status NVARCHAR(20) NOT NULL, -- Status after maintenance (e.g., "Completed", "Pending")
+    _status NVARCHAR(20) -- Status after maintenance (e.g., "Completed", "Pending")
     FOREIGN KEY (_equipment_id) REFERENCES Equipments(_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,

@@ -47,13 +47,16 @@ namespace Proiect_ABD.View_Model
         private void ExecuteLogin()
         {
             Users user = new Users().GetUserByEmailPassword(Username, Password);
-            if ((new Users ()).GetUserByEmailPassword(Username, Password) != null)
+            if (user != null)
             {
+
                 // Navigare la DashboardView
                 //DashboardView dashboardView = new DashboardView();
                 //Application.Current.MainWindow.Close();
                 //Application.Current.MainWindow = dashboardView;
                 //Application.Current.MainWindow.Show();
+
+                NavigationClass.CurrentUser = user;
 
                 NavigationClass.NavigateTo("DashboardView");
             }
@@ -66,8 +69,7 @@ namespace Proiect_ABD.View_Model
         private void ExecuteGoToRegister()
         {
             // Navigare la RegisterView
-            RegisterView registerView = new RegisterView();
-            Application.Current.MainWindow.Content = registerView;
+            NavigationClass.NavigateTo("RegisterView");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

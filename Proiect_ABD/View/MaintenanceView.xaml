@@ -4,14 +4,78 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Proiect_ABD.View"
+      xmlns:vm="clr-namespace:Proiect_ABD.View_Model"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MaintenanceView">
 
+    <Page.DataContext>
+        <vm:MaintenanceViewModel />
+    </Page.DataContext>
+
     <Grid>
-        <Label Content="mentenanta\" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
-        <Label Content="mentenanta\" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top"/>
-        <Label Content="mentenanta\" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Bottom"/>
-        <Label Content="mentenanta\" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Bottom"/>
+        <DockPanel LastChildFill="True">
+            <!-- Header-ul -->
+            <Grid DockPanel.Dock="Top" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="1.5*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0">
+                    <TextBlock Text="Name" FontWeight="Bold" TextAlignment="Center" />
+                </Border>
+                <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
+                    <TextBlock Text="Status" FontWeight="Bold" TextAlignment="Center" />
+                </Border>
+                <Border Grid.Column="2">
+                    <TextBlock Text="Performed by" FontWeight="Bold" TextAlignment="Center" />
+                </Border>                
+                <Border Grid.Column="3">
+                    <TextBlock Text="Last Update" FontWeight="Bold" TextAlignment="Center" />
+                </Border>
+            </Grid>
+
+            <!-- ListBox-ul fullscreen -->
+            <ListBox ItemsSource="{Binding MaintenanceList}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Name (Editable) -->
+                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0">
+                                <TextBox Text="{Binding Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
+                            </Border>                           
+
+                            <!-- Status with Button -->
+                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0">
+                                    <Button Content="Marcheaza ca reparat" Margin="5,0" Command="{Binding DataContext.SendToMainPage, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}" />
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,1,0">
+                                <TextBox Text="{Binding PerformedBy.Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
+                            </Border>
+
+                            <!-- Last Update -->
+                            <Border Grid.Column="3">
+                                <TextBlock Text="{Binding Date}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+
     </Grid>
 </Page>

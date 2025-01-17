@@ -30,12 +30,6 @@ namespace Proiect_ABD
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertEquipment(Equipment instance);
-    partial void UpdateEquipment(Equipment instance);
-    partial void DeleteEquipment(Equipment instance);
-    partial void InsertMaintenance(Maintenance instance);
-    partial void UpdateMaintenance(Maintenance instance);
-    partial void DeleteMaintenance(Maintenance instance);
     partial void InsertReport(Report instance);
     partial void UpdateReport(Report instance);
     partial void DeleteReport(Report instance);
@@ -45,6 +39,12 @@ namespace Proiect_ABD
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertMaintenance(Maintenance instance);
+    partial void UpdateMaintenance(Maintenance instance);
+    partial void DeleteMaintenance(Maintenance instance);
+    partial void InsertEquipment(Equipment instance);
+    partial void UpdateEquipment(Equipment instance);
+    partial void DeleteEquipment(Equipment instance);
     #endregion
 		
 		public Proiect_ABDDataContext() : 
@@ -77,22 +77,6 @@ namespace Proiect_ABD
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Equipment> Equipments
-		{
-			get
-			{
-				return this.GetTable<Equipment>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Maintenance> Maintenances
-		{
-			get
-			{
-				return this.GetTable<Maintenance>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Report> Reports
 		{
 			get
@@ -116,450 +100,20 @@ namespace Proiect_ABD
 				return this.GetTable<User>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Equipments")]
-	public partial class Equipment : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int @__id;
-		
-		private string @__name;
-		
-		private string @__status;
-		
-		private System.DateTime @__last_update;
-		
-		private EntitySet<Maintenance> _Maintenances;
-		
-		private EntitySet<Report> _Reports;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void On_idChanging(int value);
-    partial void On_idChanged();
-    partial void On_nameChanging(string value);
-    partial void On_nameChanged();
-    partial void On_statusChanging(string value);
-    partial void On_statusChanged();
-    partial void On_last_updateChanging(System.DateTime value);
-    partial void On_last_updateChanged();
-    #endregion
-		
-		public Equipment()
-		{
-			this._Maintenances = new EntitySet<Maintenance>(new Action<Maintenance>(this.attach_Maintenances), new Action<Maintenance>(this.detach_Maintenances));
-			this._Reports = new EntitySet<Report>(new Action<Report>(this.attach_Reports), new Action<Report>(this.detach_Reports));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_id]", Storage="__id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int _id
+		public System.Data.Linq.Table<Maintenance> Maintenances
 		{
 			get
 			{
-				return this.@__id;
-			}
-			set
-			{
-				if ((this.@__id != value))
-				{
-					this.On_idChanging(value);
-					this.SendPropertyChanging();
-					this.@__id = value;
-					this.SendPropertyChanged("_id");
-					this.On_idChanged();
-				}
+				return this.GetTable<Maintenance>();
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_name]", Storage="__name", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string _name
+		public System.Data.Linq.Table<Equipment> Equipments
 		{
 			get
 			{
-				return this.@__name;
-			}
-			set
-			{
-				if ((this.@__name != value))
-				{
-					this.On_nameChanging(value);
-					this.SendPropertyChanging();
-					this.@__name = value;
-					this.SendPropertyChanged("_name");
-					this.On_nameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_status]", Storage="__status", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string _status
-		{
-			get
-			{
-				return this.@__status;
-			}
-			set
-			{
-				if ((this.@__status != value))
-				{
-					this.On_statusChanging(value);
-					this.SendPropertyChanging();
-					this.@__status = value;
-					this.SendPropertyChanged("_status");
-					this.On_statusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_last_update]", Storage="__last_update", DbType="DateTime NOT NULL")]
-		public System.DateTime _last_update
-		{
-			get
-			{
-				return this.@__last_update;
-			}
-			set
-			{
-				if ((this.@__last_update != value))
-				{
-					this.On_last_updateChanging(value);
-					this.SendPropertyChanging();
-					this.@__last_update = value;
-					this.SendPropertyChanged("_last_update");
-					this.On_last_updateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Maintenance", Storage="_Maintenances", ThisKey="_id", OtherKey="_equipment_id")]
-		public EntitySet<Maintenance> Maintenances
-		{
-			get
-			{
-				return this._Maintenances;
-			}
-			set
-			{
-				this._Maintenances.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Report", Storage="_Reports", ThisKey="_id", OtherKey="_equipment_id")]
-		public EntitySet<Report> Reports
-		{
-			get
-			{
-				return this._Reports;
-			}
-			set
-			{
-				this._Reports.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Maintenances(Maintenance entity)
-		{
-			this.SendPropertyChanging();
-			entity.Equipment = this;
-		}
-		
-		private void detach_Maintenances(Maintenance entity)
-		{
-			this.SendPropertyChanging();
-			entity.Equipment = null;
-		}
-		
-		private void attach_Reports(Report entity)
-		{
-			this.SendPropertyChanging();
-			entity.Equipment = this;
-		}
-		
-		private void detach_Reports(Report entity)
-		{
-			this.SendPropertyChanging();
-			entity.Equipment = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Maintenance")]
-	public partial class Maintenance : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int @__maintenance_id;
-		
-		private int @__equipment_id;
-		
-		private int @__performed_by;
-		
-		private string @__description;
-		
-		private System.DateTime @__performed_at;
-		
-		private string @__status;
-		
-		private EntityRef<Equipment> _Equipment;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void On_maintenance_idChanging(int value);
-    partial void On_maintenance_idChanged();
-    partial void On_equipment_idChanging(int value);
-    partial void On_equipment_idChanged();
-    partial void On_performed_byChanging(int value);
-    partial void On_performed_byChanged();
-    partial void On_descriptionChanging(string value);
-    partial void On_descriptionChanged();
-    partial void On_performed_atChanging(System.DateTime value);
-    partial void On_performed_atChanged();
-    partial void On_statusChanging(string value);
-    partial void On_statusChanged();
-    #endregion
-		
-		public Maintenance()
-		{
-			this._Equipment = default(EntityRef<Equipment>);
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_maintenance_id]", Storage="__maintenance_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int _maintenance_id
-		{
-			get
-			{
-				return this.@__maintenance_id;
-			}
-			set
-			{
-				if ((this.@__maintenance_id != value))
-				{
-					this.On_maintenance_idChanging(value);
-					this.SendPropertyChanging();
-					this.@__maintenance_id = value;
-					this.SendPropertyChanged("_maintenance_id");
-					this.On_maintenance_idChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_equipment_id]", Storage="__equipment_id", DbType="Int NOT NULL")]
-		public int _equipment_id
-		{
-			get
-			{
-				return this.@__equipment_id;
-			}
-			set
-			{
-				if ((this.@__equipment_id != value))
-				{
-					this.On_equipment_idChanging(value);
-					this.SendPropertyChanging();
-					this.@__equipment_id = value;
-					this.SendPropertyChanged("_equipment_id");
-					this.On_equipment_idChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_performed_by]", Storage="__performed_by", DbType="Int NOT NULL")]
-		public int _performed_by
-		{
-			get
-			{
-				return this.@__performed_by;
-			}
-			set
-			{
-				if ((this.@__performed_by != value))
-				{
-					this.On_performed_byChanging(value);
-					this.SendPropertyChanging();
-					this.@__performed_by = value;
-					this.SendPropertyChanged("_performed_by");
-					this.On_performed_byChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_description]", Storage="__description", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string _description
-		{
-			get
-			{
-				return this.@__description;
-			}
-			set
-			{
-				if ((this.@__description != value))
-				{
-					this.On_descriptionChanging(value);
-					this.SendPropertyChanging();
-					this.@__description = value;
-					this.SendPropertyChanged("_description");
-					this.On_descriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_performed_at]", Storage="__performed_at", DbType="DateTime NOT NULL")]
-		public System.DateTime _performed_at
-		{
-			get
-			{
-				return this.@__performed_at;
-			}
-			set
-			{
-				if ((this.@__performed_at != value))
-				{
-					this.On_performed_atChanging(value);
-					this.SendPropertyChanging();
-					this.@__performed_at = value;
-					this.SendPropertyChanged("_performed_at");
-					this.On_performed_atChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_status]", Storage="__status", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string _status
-		{
-			get
-			{
-				return this.@__status;
-			}
-			set
-			{
-				if ((this.@__status != value))
-				{
-					this.On_statusChanging(value);
-					this.SendPropertyChanging();
-					this.@__status = value;
-					this.SendPropertyChanged("_status");
-					this.On_statusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Maintenance", Storage="_Equipment", ThisKey="_equipment_id", OtherKey="_id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Equipment Equipment
-		{
-			get
-			{
-				return this._Equipment.Entity;
-			}
-			set
-			{
-				Equipment previousValue = this._Equipment.Entity;
-				if (((previousValue != value) 
-							|| (this._Equipment.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Equipment.Entity = null;
-						previousValue.Maintenances.Remove(this);
-					}
-					this._Equipment.Entity = value;
-					if ((value != null))
-					{
-						value.Maintenances.Add(this);
-						this.@__equipment_id = value._id;
-					}
-					else
-					{
-						this.@__equipment_id = default(int);
-					}
-					this.SendPropertyChanged("Equipment");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Maintenance", Storage="_User", ThisKey="_performed_by", OtherKey="_id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Maintenances.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Maintenances.Add(this);
-						this.@__performed_by = value._id;
-					}
-					else
-					{
-						this.@__performed_by = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<Equipment>();
 			}
 		}
 	}
@@ -582,9 +136,9 @@ namespace Proiect_ABD
 		
 		private int @__equipment_id;
 		
-		private EntityRef<Equipment> _Equipment;
-		
 		private EntityRef<User> _User;
+		
+		private EntityRef<Equipment> _Equipment;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -606,8 +160,8 @@ namespace Proiect_ABD
 		
 		public Report()
 		{
-			this._Equipment = default(EntityRef<Equipment>);
 			this._User = default(EntityRef<User>);
+			this._Equipment = default(EntityRef<Equipment>);
 			OnCreated();
 		}
 		
@@ -731,40 +285,6 @@ namespace Proiect_ABD
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Report", Storage="_Equipment", ThisKey="_equipment_id", OtherKey="_id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Equipment Equipment
-		{
-			get
-			{
-				return this._Equipment.Entity;
-			}
-			set
-			{
-				Equipment previousValue = this._Equipment.Entity;
-				if (((previousValue != value) 
-							|| (this._Equipment.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Equipment.Entity = null;
-						previousValue.Reports.Remove(this);
-					}
-					this._Equipment.Entity = value;
-					if ((value != null))
-					{
-						value.Reports.Add(this);
-						this.@__equipment_id = value._id;
-					}
-					else
-					{
-						this.@__equipment_id = default(int);
-					}
-					this.SendPropertyChanged("Equipment");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Report", Storage="_User", ThisKey="_created_by", OtherKey="_id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public User User
 		{
@@ -795,6 +315,40 @@ namespace Proiect_ABD
 						this.@__created_by = default(int);
 					}
 					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Report", Storage="_Equipment", ThisKey="_equipment_id", OtherKey="_id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Equipment Equipment
+		{
+			get
+			{
+				return this._Equipment.Entity;
+			}
+			set
+			{
+				Equipment previousValue = this._Equipment.Entity;
+				if (((previousValue != value) 
+							|| (this._Equipment.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Equipment.Entity = null;
+						previousValue.Reports.Remove(this);
+					}
+					this._Equipment.Entity = value;
+					if ((value != null))
+					{
+						value.Reports.Add(this);
+						this.@__equipment_id = value._id;
+					}
+					else
+					{
+						this.@__equipment_id = default(int);
+					}
+					this.SendPropertyChanged("Equipment");
 				}
 			}
 		}
@@ -950,9 +504,9 @@ namespace Proiect_ABD
 		
 		private int @__role_id;
 		
-		private EntitySet<Maintenance> _Maintenances;
-		
 		private EntitySet<Report> _Reports;
+		
+		private EntitySet<Maintenance> _Maintenances;
 		
 		private EntityRef<Role> _Role;
 		
@@ -974,8 +528,8 @@ namespace Proiect_ABD
 		
 		public User()
 		{
-			this._Maintenances = new EntitySet<Maintenance>(new Action<Maintenance>(this.attach_Maintenances), new Action<Maintenance>(this.detach_Maintenances));
 			this._Reports = new EntitySet<Report>(new Action<Report>(this.attach_Reports), new Action<Report>(this.detach_Reports));
+			this._Maintenances = new EntitySet<Maintenance>(new Action<Maintenance>(this.attach_Maintenances), new Action<Maintenance>(this.detach_Maintenances));
 			this._Role = default(EntityRef<Role>);
 			OnCreated();
 		}
@@ -1020,7 +574,7 @@ namespace Proiect_ABD
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_password]", Storage="__password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_password]", Storage="__password", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
 		public string _password
 		{
 			get
@@ -1080,19 +634,6 @@ namespace Proiect_ABD
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Maintenance", Storage="_Maintenances", ThisKey="_id", OtherKey="_performed_by")]
-		public EntitySet<Maintenance> Maintenances
-		{
-			get
-			{
-				return this._Maintenances;
-			}
-			set
-			{
-				this._Maintenances.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Report", Storage="_Reports", ThisKey="_id", OtherKey="_created_by")]
 		public EntitySet<Report> Reports
 		{
@@ -1103,6 +644,19 @@ namespace Proiect_ABD
 			set
 			{
 				this._Reports.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Maintenance", Storage="_Maintenances", ThisKey="_id", OtherKey="_performed_by")]
+		public EntitySet<Maintenance> Maintenances
+		{
+			get
+			{
+				return this._Maintenances;
+			}
+			set
+			{
+				this._Maintenances.Assign(value);
 			}
 		}
 		
@@ -1160,6 +714,18 @@ namespace Proiect_ABD
 			}
 		}
 		
+		private void attach_Reports(Report entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Reports(Report entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
 		private void attach_Maintenances(Maintenance entity)
 		{
 			this.SendPropertyChanging();
@@ -1171,17 +737,451 @@ namespace Proiect_ABD
 			this.SendPropertyChanging();
 			entity.User = null;
 		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Maintenance")]
+	public partial class Maintenance : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int @__maintenance_id;
+		
+		private int @__equipment_id;
+		
+		private int @__performed_by;
+		
+		private string @__description;
+		
+		private System.DateTime @__performed_at;
+		
+		private string @__status;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<Equipment> _Equipment;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void On_maintenance_idChanging(int value);
+    partial void On_maintenance_idChanged();
+    partial void On_equipment_idChanging(int value);
+    partial void On_equipment_idChanged();
+    partial void On_performed_byChanging(int value);
+    partial void On_performed_byChanged();
+    partial void On_descriptionChanging(string value);
+    partial void On_descriptionChanged();
+    partial void On_performed_atChanging(System.DateTime value);
+    partial void On_performed_atChanged();
+    partial void On_statusChanging(string value);
+    partial void On_statusChanged();
+    #endregion
+		
+		public Maintenance()
+		{
+			this._User = default(EntityRef<User>);
+			this._Equipment = default(EntityRef<Equipment>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_maintenance_id]", Storage="__maintenance_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int _maintenance_id
+		{
+			get
+			{
+				return this.@__maintenance_id;
+			}
+			set
+			{
+				if ((this.@__maintenance_id != value))
+				{
+					this.On_maintenance_idChanging(value);
+					this.SendPropertyChanging();
+					this.@__maintenance_id = value;
+					this.SendPropertyChanged("_maintenance_id");
+					this.On_maintenance_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_equipment_id]", Storage="__equipment_id", DbType="Int NOT NULL")]
+		public int _equipment_id
+		{
+			get
+			{
+				return this.@__equipment_id;
+			}
+			set
+			{
+				if ((this.@__equipment_id != value))
+				{
+					this.On_equipment_idChanging(value);
+					this.SendPropertyChanging();
+					this.@__equipment_id = value;
+					this.SendPropertyChanged("_equipment_id");
+					this.On_equipment_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_performed_by]", Storage="__performed_by", DbType="Int NOT NULL")]
+		public int _performed_by
+		{
+			get
+			{
+				return this.@__performed_by;
+			}
+			set
+			{
+				if ((this.@__performed_by != value))
+				{
+					this.On_performed_byChanging(value);
+					this.SendPropertyChanging();
+					this.@__performed_by = value;
+					this.SendPropertyChanged("_performed_by");
+					this.On_performed_byChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_description]", Storage="__description", DbType="NVarChar(MAX)")]
+		public string _description
+		{
+			get
+			{
+				return this.@__description;
+			}
+			set
+			{
+				if ((this.@__description != value))
+				{
+					this.On_descriptionChanging(value);
+					this.SendPropertyChanging();
+					this.@__description = value;
+					this.SendPropertyChanged("_description");
+					this.On_descriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_performed_at]", Storage="__performed_at", DbType="DateTime NOT NULL")]
+		public System.DateTime _performed_at
+		{
+			get
+			{
+				return this.@__performed_at;
+			}
+			set
+			{
+				if ((this.@__performed_at != value))
+				{
+					this.On_performed_atChanging(value);
+					this.SendPropertyChanging();
+					this.@__performed_at = value;
+					this.SendPropertyChanged("_performed_at");
+					this.On_performed_atChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_status]", Storage="__status", DbType="NVarChar(20)")]
+		public string _status
+		{
+			get
+			{
+				return this.@__status;
+			}
+			set
+			{
+				if ((this.@__status != value))
+				{
+					this.On_statusChanging(value);
+					this.SendPropertyChanging();
+					this.@__status = value;
+					this.SendPropertyChanged("_status");
+					this.On_statusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Maintenance", Storage="_User", ThisKey="_performed_by", OtherKey="_id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Maintenances.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Maintenances.Add(this);
+						this.@__performed_by = value._id;
+					}
+					else
+					{
+						this.@__performed_by = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Maintenance", Storage="_Equipment", ThisKey="_equipment_id", OtherKey="_id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Equipment Equipment
+		{
+			get
+			{
+				return this._Equipment.Entity;
+			}
+			set
+			{
+				Equipment previousValue = this._Equipment.Entity;
+				if (((previousValue != value) 
+							|| (this._Equipment.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Equipment.Entity = null;
+						previousValue.Maintenances.Remove(this);
+					}
+					this._Equipment.Entity = value;
+					if ((value != null))
+					{
+						value.Maintenances.Add(this);
+						this.@__equipment_id = value._id;
+					}
+					else
+					{
+						this.@__equipment_id = default(int);
+					}
+					this.SendPropertyChanged("Equipment");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Equipments")]
+	public partial class Equipment : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int @__id;
+		
+		private string @__name;
+		
+		private string @__status;
+		
+		private System.DateTime @__last_update;
+		
+		private EntitySet<Report> _Reports;
+		
+		private EntitySet<Maintenance> _Maintenances;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void On_idChanging(int value);
+    partial void On_idChanged();
+    partial void On_nameChanging(string value);
+    partial void On_nameChanged();
+    partial void On_statusChanging(string value);
+    partial void On_statusChanged();
+    partial void On_last_updateChanging(System.DateTime value);
+    partial void On_last_updateChanged();
+    #endregion
+		
+		public Equipment()
+		{
+			this._Reports = new EntitySet<Report>(new Action<Report>(this.attach_Reports), new Action<Report>(this.detach_Reports));
+			this._Maintenances = new EntitySet<Maintenance>(new Action<Maintenance>(this.attach_Maintenances), new Action<Maintenance>(this.detach_Maintenances));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_id]", Storage="__id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int _id
+		{
+			get
+			{
+				return this.@__id;
+			}
+			set
+			{
+				if ((this.@__id != value))
+				{
+					this.On_idChanging(value);
+					this.SendPropertyChanging();
+					this.@__id = value;
+					this.SendPropertyChanged("_id");
+					this.On_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_name]", Storage="__name", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string _name
+		{
+			get
+			{
+				return this.@__name;
+			}
+			set
+			{
+				if ((this.@__name != value))
+				{
+					this.On_nameChanging(value);
+					this.SendPropertyChanging();
+					this.@__name = value;
+					this.SendPropertyChanged("_name");
+					this.On_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_status]", Storage="__status", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string _status
+		{
+			get
+			{
+				return this.@__status;
+			}
+			set
+			{
+				if ((this.@__status != value))
+				{
+					this.On_statusChanging(value);
+					this.SendPropertyChanging();
+					this.@__status = value;
+					this.SendPropertyChanged("_status");
+					this.On_statusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[_last_update]", Storage="__last_update", DbType="DateTime NOT NULL")]
+		public System.DateTime _last_update
+		{
+			get
+			{
+				return this.@__last_update;
+			}
+			set
+			{
+				if ((this.@__last_update != value))
+				{
+					this.On_last_updateChanging(value);
+					this.SendPropertyChanging();
+					this.@__last_update = value;
+					this.SendPropertyChanged("_last_update");
+					this.On_last_updateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Report", Storage="_Reports", ThisKey="_id", OtherKey="_equipment_id")]
+		public EntitySet<Report> Reports
+		{
+			get
+			{
+				return this._Reports;
+			}
+			set
+			{
+				this._Reports.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Equipment_Maintenance", Storage="_Maintenances", ThisKey="_id", OtherKey="_equipment_id")]
+		public EntitySet<Maintenance> Maintenances
+		{
+			get
+			{
+				return this._Maintenances;
+			}
+			set
+			{
+				this._Maintenances.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
 		
 		private void attach_Reports(Report entity)
 		{
 			this.SendPropertyChanging();
-			entity.User = this;
+			entity.Equipment = this;
 		}
 		
 		private void detach_Reports(Report entity)
 		{
 			this.SendPropertyChanging();
-			entity.User = null;
+			entity.Equipment = null;
+		}
+		
+		private void attach_Maintenances(Maintenance entity)
+		{
+			this.SendPropertyChanging();
+			entity.Equipment = this;
+		}
+		
+		private void detach_Maintenances(Maintenance entity)
+		{
+			this.SendPropertyChanging();
+			entity.Equipment = null;
 		}
 	}
 }

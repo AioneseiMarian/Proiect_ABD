@@ -73,18 +73,30 @@ namespace Proiect_ABD.Model
 
             return equipments;
         }
-    
-        public void UpdateEquipmentById(Equipments equipment ,int id)
+
+        public Equipments GetEquipmentById(int id)
         {
-            
-            foreach (var item in _context.Equipments)
+            var equipment = _context.Equipments.FirstOrDefault(e => e._id == id);
+            return new Equipments
             {
-                //if(item._id == id)
-                //{
-                //    item = equipment;
-                //}
-            }
+                Id = equipment._id,
+                Name = equipment._name,
+                Status = equipment._status,
+                LastUpdate = equipment._last_update
+            };
         }
-        
+
+        //public void UpdateEquipmentById(Equipments equipment ,int id)
+        //{
+
+        //    foreach (var item in _context.Equipments)
+        //    {
+        //        //if(item._id == id)
+        //        //{
+        //        //    item = equipment;
+        //        //}
+        //    }
+        //}
+
     }
 }
