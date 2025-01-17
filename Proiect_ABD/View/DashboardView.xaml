@@ -3,40 +3,57 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Proiect_ABD.View_Model"
         Title="Dashboard" Height="600" Width="900"
-        WindowState="Maximized" >
-
+        WindowState="Maximized" 
+        Background="#2e2e2e" Foreground="White">
 
     <DockPanel>
         <!-- Sectiunea de butoane in partea stanga -->
-        <Border DockPanel.Dock="Left" Background="#F0F0F0" Width="200">
+        <Border DockPanel.Dock="Left" Background="#2e2e2e" Width="200" BorderBrush="#960000" BorderThickness="0,0,2,0">
             <StackPanel Margin="10">
-                <Button Content="Echipamente" Command="{Binding NavigateCommand}" CommandParameter="EquipmentView" Margin="0,5,0,5" />
+                <!-- Style for Buttons -->
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#3b3b3b" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="BorderBrush" Value="#c4c4c4" />
+                        <Setter Property="BorderThickness" Value="2" />
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Padding" Value="10" />
+                        <Setter Property="Margin" Value="0,5,0,5" />
+                        <Style.Triggers>
+                            <!-- Hover Effect -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#960000" />
+                            </Trigger>
+                            <!-- Selected Option Effect -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#960000" />
+                                <Setter Property="BorderBrush" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
 
-                <Button Content="Mentenanță" Command="{Binding NavigateCommand}" CommandParameter="MaintenanceView" Margin="0,5,0,5"
-                        Visibility="{Binding CanViewMaintenance, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
+                <!-- Buttons -->
+                <Button Content="Echipamente" Command="{Binding NavigateCommand}" CommandParameter="EquipmentView" />
+                <Button Content="Mentenanță" Command="{Binding NavigateCommand}" CommandParameter="MaintenanceView" 
+                        Visibility="{Binding CanViewMaintenance, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <Button Content="Gestionare Utilizatori" 
-                        Command="{Binding NavigateCommand}" 
-                        CommandParameter="ManageUsersView" 
-                        Margin="0,5,0,5" 
+                        Command="{Binding NavigateCommand}" CommandParameter="ManageUsersView" 
                         Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                <Button Content="Deconectare" Command="{Binding LogoutCommand}" Margin="0,5,0,5" />
+                <Button Content="Deconectare" Command="{Binding LogoutCommand}" />
             </StackPanel>
         </Border>
 
         <!-- Sectiunea principala cu echipamente -->
-        <ScrollViewer DockPanel.Dock="Right">
+        <ScrollViewer DockPanel.Dock="Right" Background="White">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="31*"/>
                     <RowDefinition Height="42*"/>
                 </Grid.RowDefinitions>
-                <Frame x:Name="MainFrame" Content="{Binding CurrentView}" NavigationUIVisibility="Hidden" Grid.RowSpan="2" />
-
+                <Frame x:Name="MainFrame" Content="{Binding CurrentView}" NavigationUIVisibility="Hidden" Grid.RowSpan="2" Background="White" />
             </Grid>
         </ScrollViewer>
     </DockPanel>
-
-
 </Window>

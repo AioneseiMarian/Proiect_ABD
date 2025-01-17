@@ -14,42 +14,19 @@
         <vm:ManageUsersViewModel />
     </Page.DataContext>
 
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid Background="#ededed" Margin="20">
+        <!-- Title at the top-left with large font -->
+        <TextBlock Text="Manage Users" FontSize="36" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" FontFamily="Microsoft Sans Serif" />
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <!-- Border line under the title -->
+        <Border Height="4" Background="#960000" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="15,56,10,0" />
 
-            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0">
-                <TextBlock Text="Name" FontWeight="Bold" TextAlignment="Center" Padding="5" />
-            </Border>
-            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
-                <TextBlock Text="Current Role" FontWeight="Bold" TextAlignment="Center" Padding="5" />
-            </Border>
-            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,1,0">
-                <TextBlock Text="New Role" FontWeight="Bold" TextAlignment="Center" Padding="5" />
-            </Border>
-            <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0,0,1,0">
-                <TextBlock Text="Email" FontWeight="Bold" TextAlignment="Center" Padding="5" />
-            </Border>
-        </Grid>
-
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <ListBox ItemsSource="{Binding UsersList}" HorizontalContentAlignment="Stretch">
+        <!-- ListBox displaying the users -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="15,60,10,50">
+            <ListBox ItemsSource="{Binding UsersList}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Stretch" Margin="0,5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="*" />
@@ -59,54 +36,50 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0">
-                                <TextBox Text="{Binding Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
+                            <!-- Name -->
+                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
+                                <TextBox Text="{Binding Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" Background="#e2e2e2" FontSize="16" Padding="5"/>
                             </Border>
 
-                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0">
-                                <TextBlock Text="{Binding Role.Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
+                            <!-- Current Role -->
+                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
+                                <TextBlock Text="{Binding Role.Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" FontSize="16"/>
                             </Border>
 
-                            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,1,0">
-                                <ComboBox 
-                                    ItemsSource="{Binding DataContext.RolesList, RelativeSource={RelativeSource AncestorType=Page}}"
-                                    DisplayMemberPath="Name"
-                                    SelectedItem="{Binding Role, Mode=TwoWay}" 
-                                    VerticalAlignment="Center" 
-                                    Margin="5,0">
+                            <!-- New Role ComboBox -->
+                            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
+                                <ComboBox ItemsSource="{Binding DataContext.RolesList, RelativeSource={RelativeSource AncestorType=Page}}"
+                                          DisplayMemberPath="Name"
+                                          SelectedItem="{Binding Role, Mode=TwoWay}" 
+                                          VerticalAlignment="Center" 
+                                          Margin="5,0"
+                                          FontSize="16">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Name}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <!--<ComboBox SelectedItem="{Binding Role}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,0">
-                                    <ComboBox.ItemsSource>
-                                        <x:Array Type="sys:String" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                                            <sys:String>disponibil</sys:String>
-                                            <sys:String>indisponibil</sys:String>
-                                            <sys:String>in mentenanta</sys:String>
-                                        </x:Array>
-                                    </ComboBox.ItemsSource>
-                                </ComboBox>-->
                             </Border>
 
-                            <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0,0,1,0">
-                                <TextBox Text="{Binding Email}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" />
+                            <!-- Email -->
+                            <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
+                                <TextBox Text="{Binding Email}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" Background="#e2e2e2" FontSize="16" Padding="5"/>
                             </Border>
 
-                            <Border Grid.Column="4" BorderBrush="Black" BorderThickness="0,0,1,0">
+                            <!-- Buttons: Change Password and Delete User -->
+                            <Border Grid.Column="4" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
                                 <Button Content="Change Password" 
                                         Command="{Binding DataContext.ChangePasswordCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
                                         CommandParameter="{Binding}"
-                                        Margin="5" />
+                                        Margin="5" Background="#960000" Foreground="White" BorderBrush="#c4c4c4" BorderThickness="2" Padding="8,4" FontSize="14"/>
                             </Border>
 
-                            <Border Grid.Column="5" BorderBrush="Black" BorderThickness="0,0,1,0">
+                            <Border Grid.Column="5" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
                                 <Button Content="Delete User" 
                                         Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
                                         CommandParameter="{Binding}"
-                                        Margin="5" />
+                                        Margin="5" Background="#960000" Foreground="White" BorderBrush="#c4c4c4" BorderThickness="2" Padding="8,4" FontSize="14"/>
                             </Border>
                         </Grid>
                     </DataTemplate>
@@ -114,9 +87,10 @@
             </ListBox>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Add User" Command="{Binding AddUserCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" />
-            <Button Content="Save" Command="{Binding SaveCommand}" Margin="5" />
+        <!-- Footer Buttons: Add User & Save -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Bottom">
+            <Button Content="Add User" Command="{Binding AddUserCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Background="#960000" Foreground="White" BorderBrush="#c4c4c4" BorderThickness="2" Padding="10,5" FontSize="16"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" Margin="10" Background="#960000" Foreground="White" BorderBrush="#c4c4c4" BorderThickness="2" Padding="10,5" FontSize="16"/>
         </StackPanel>
     </Grid>
 </Page>
