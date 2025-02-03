@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using Proiect_ABD.View;
 using Proiect_ABD.Utils;
 using Proiect_ABD.Model;
+using Proiect_ABD.Data;
 
 namespace Proiect_ABD.View_Model
 {
@@ -13,6 +14,7 @@ namespace Proiect_ABD.View_Model
     {
         private string _username;
         private string _password;
+        private UsersRepository _usersRepository;
 
         public string Username
         {
@@ -36,17 +38,15 @@ namespace Proiect_ABD.View_Model
         public ICommand LoginCommand { get; }
         public ICommand GoToRegisterCommand { get; }
 
-        public LoginViewModel()
+        public LoginViewModel(UsersRepository usersRepository)
         {
+            _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
             LoginCommand = new RelayCommand(ExecuteLogin);
             GoToRegisterCommand = new RelayCommand(ExecuteGoToRegister);
-
-   
         }
-
         private void ExecuteLogin()
         {
-            Users user = new Users().GetUserByEmailPassword(Username, Password);
+            Users user = _usersRepository.GetUserByEmailPassword(Username, Password);
             if (user != null)
             {
 

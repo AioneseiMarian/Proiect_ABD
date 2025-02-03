@@ -18,24 +18,19 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Username -->
         <TextBlock Text="Username:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5" />
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewUser.Name, Mode=TwoWay}" Margin="5" />
 
-        <!-- Email -->
         <TextBlock Text="Email:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5" />
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewUser.Email, Mode=TwoWay}" Margin="5" />
 
-        <!-- Password -->
         <TextBlock Text="Password:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5" />
         <PasswordBox Grid.Row="2" Grid.Column="1" Margin="5" PasswordChanged="PasswordBox_PasswordChanged" />
 
-        <!-- Role -->
         <TextBlock Text="Role:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5" />
         <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding RolesList}" 
                   DisplayMemberPath="Name" SelectedItem="{Binding NewUser.Role, Mode=TwoWay}" Margin="5" />
 
-        <!-- Buttons -->
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
             <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5" Height="30" Width="48" />
             <Button Content="Add User" Command="{Binding AddUserCommand}" Margin="5" Height="30" Width="57" />

@@ -16,6 +16,7 @@ namespace Proiect_ABD.View_Model
 {
     public class DashboardViewModel : ViewModelBase , INotifyPropertyChanged
     {
+        private readonly ViewModelFactory _viewModelFactory;
         public Roles UserRole { get; set; }
         private bool canViewMaintenance;
 
@@ -31,8 +32,18 @@ namespace Proiect_ABD.View_Model
                 }
             }
         }
+        private readonly NotificationService _notificationService;
+        public DashboardViewModel(NotificationService notificationService)
+        {
+            _notificationService = notificationService;
+            NavigateCommand = new RelayCommand<string>(ExecuteNavigate);
+            LogoutCommand = new RelayCommand(ExecuteLogout);
 
-
+            // Default values for demonstration
+            IsEquipmentModified = notificationService.HasNewEquipment;
+            IsMaintenanceModified = notificationService.HasNewMaintenance;
+            IsUserModified = notificationService.HasNewUsers;
+        }
 
         private bool _isAdmin;
         public bool IsAdmin
@@ -61,6 +72,44 @@ namespace Proiect_ABD.View_Model
                 OnPropertyChanged(nameof(UserRole));
             }
         }
+        public bool IsEquipmentModified
+        {
+            get => _notificationService.HasNewEquipment;
+            set
+            {
+                if (_notificationService.HasNewEquipment != value)
+                {
+                    _notificationService.HasNewEquipment = value;
+                    OnPropertyChanged(nameof(IsEquipmentModified));
+                }
+            }
+        }
+
+        public bool IsMaintenanceModified
+        {
+            get => _notificationService.HasNewMaintenance;
+            set
+            {
+                if (_notificationService.HasNewMaintenance != value)
+                {
+                    _notificationService.HasNewMaintenance = value;
+                    OnPropertyChanged(nameof(IsMaintenanceModified));
+                }
+            }
+        }
+
+        public bool IsUserModified
+        {
+            get => _notificationService.HasNewUsers;
+            set
+            {
+                if (_notificationService.HasNewUsers != value)
+                {
+                    _notificationService.HasNewUsers = value;
+                    OnPropertyChanged(nameof(IsUserModified));
+                }
+            }
+        }
 
         public ICommand NavigateCommand { get; }
         public ICommand LogoutCommand { get; }
@@ -75,13 +124,14 @@ namespace Proiect_ABD.View_Model
             }
         }
 
-        public DashboardViewModel() : this(null) { }
+        public DashboardViewModel() : this(null, null, null) { }
 
-        public DashboardViewModel(Users user)
+        public DashboardViewModel(Users user, NotificationService notificationService, ViewModelFactory viewModelFactory)
         {
-            // Inițial, afișează EquipmentView
-            _currentUser = user;
-            
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService)); _currentUser = user;
+            _viewModelFactory = viewModelFactory ?? throw new ArgumentNullException(nameof(viewModelFactory));
+            OnPropertyChanged(nameof(UserRole));
+
             switch (user.Role.Name)
             {
                 case "Administrator":
@@ -105,7 +155,7 @@ namespace Proiect_ABD.View_Model
             NavigateCommand = new RelayCommand<string>(ExecuteNavigate);
             LogoutCommand = new RelayCommand(ExecuteLogout);
 
-            CurrentView = new EquipmentViewModel(CurrentUser);
+            CurrentView = new EquipmentViewModel(CurrentUser, _notificationService);
         }
 
 
@@ -115,13 +165,16 @@ namespace Proiect_ABD.View_Model
             switch (viewName)
             {
                 case "EquipmentView":
-                    CurrentView = new EquipmentViewModel(CurrentUser);
+                    IsEquipmentModified = false;
+                    CurrentView = new EquipmentViewModel(CurrentUser, _notificationService);
                     break;
                 case "ManageUsersView":
-                    CurrentView = new ManageUsersViewModel();
+                    IsUserModified = false;
+                    CurrentView = _viewModelFactory.CreateManageUsersViewModel();
                     break;
                 case "MaintenanceView":
-                    CurrentView = new MaintenanceViewModel(CurrentUser);
+                    IsMaintenanceModified = false;
+                    CurrentView = new MaintenanceViewModel(CurrentUser, _notificationService);
                     break;
                 default:
                     MessageBox.Show("Invalid view name");

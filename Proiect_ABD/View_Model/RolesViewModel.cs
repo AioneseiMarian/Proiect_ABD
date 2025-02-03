@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Proiect_ABD;
+using Proiect_ABD.Data;
 using Proiect_ABD.Model;
 
 namespace Proiect_ABD.View_Model
 {
     public class RolesViewModel : ViewModelBase
     {
+        private readonly RolesRepository _rolesRepository;
         private ObservableCollection<Roles> rolesList;
+
         public ObservableCollection<Roles> RolesList
         {
             get => rolesList;
@@ -23,10 +21,40 @@ namespace Proiect_ABD.View_Model
             }
         }
 
+        public ICommand AddRoleCommand { get; }
+        public ICommand RemoveRoleCommand { get; }
+
         public RolesViewModel()
         {
-            rolesList = (new Roles()).GetAllRoles();
+            _rolesRepository = new RolesRepository();
+            LoadRoles();
+
+            //AddRoleCommand = new RelayCommand<Roles>(AddRole);
+            //RemoveRoleCommand = new RelayCommand<Roles>(RemoveRole);
         }
+
+        private void LoadRoles()
+        {
+            RolesList = new ObservableCollection<Roles>(_rolesRepository.GetAllRoles());
+        }
+
+        //private void AddRole(Roles role)
+        //{
+        //    if (role != null)
+        //    {
+        //        _rolesRepository.AddRole(role);
+        //        LoadRoles();
+        //    }
+        //}
+
+        //private void RemoveRole(Roles role)
+        //{
+        //    if (role != null)
+        //    {
+        //        _rolesRepository.RemoveRole(role);
+        //        LoadRoles();
+        //    }
+        //}
 
     }
 }

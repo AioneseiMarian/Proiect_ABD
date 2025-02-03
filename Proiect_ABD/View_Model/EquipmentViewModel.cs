@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Proiect_ABD.Model;
 using Proiect_ABD;
 using System.Collections.ObjectModel;
@@ -12,6 +11,8 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
+using Proiect_ABD.Data;
+using Proiect_ABD.Utils;
 
 namespace Proiect_ABD.View_Model
 {
@@ -20,24 +21,21 @@ namespace Proiect_ABD.View_Model
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private ObservableCollection<Equipments> availableEquipments;
         public ObservableCollection<Equipments> AvailableEquipments
         {
             get { return availableEquipments; }
-            set { availableEquipments = value; OnPropertyChanged("AvailableEquipments"); }
+            set { availableEquipments = value; OnPropertyChanged(nameof(AvailableEquipments)); }
         }
 
         private Users currentUser;
         public Users CurrentUser
         {
             get { return currentUser; }
-            set { currentUser = value; OnPropertyChanged("CurrentUser"); }
+            set { currentUser = value; OnPropertyChanged(nameof(CurrentUser)); }
         }
 
 
@@ -45,33 +43,58 @@ namespace Proiect_ABD.View_Model
         public ObservableCollection<Equipments> EquipmentList
         {
             get { return equipmentList; }
-            set { equipmentList = value; OnPropertyChanged("EquipmentList"); }
+            set { equipmentList = value; OnPropertyChanged(nameof(EquipmentList)); }
         }
 
         public ICommand SendToMaintenanceCommand { get; }
         public ICommand SaveCommand { get; }
 
-        public EquipmentViewModel() : this(null) { }
-        public EquipmentViewModel(Users user)
+        private EquipmentRepository _equipmentRepository;
+        private MaintenanceRecordRepository _maintenanceRecordRepository;
+        private readonly NotificationService _notificationService;
+        public EquipmentViewModel() : this(null, null) { }
+        public EquipmentViewModel(Users user, NotificationService notificationService)
         {
             CurrentUser = user;
-            equipmentList = (new Equipments()).GetAllEquipments();
-            availableEquipments = GetAvailableEquipments();
 
-            SendToMaintenanceCommand = new RelayCommand<Equipments>(Equipments => SendToMaintenance(Equipments));
+            // Initialize repositories
+            _equipmentRepository = new EquipmentRepository();
+            _maintenanceRecordRepository = new MaintenanceRecordRepository();  // Initialize this here
+            _notificationService = notificationService;
+
+            EquipmentList = new ObservableCollection<Equipments>(_equipmentRepository.GetAllEquipments());
+            AvailableEquipments = new ObservableCollection<Equipments>(
+                EquipmentList.Where(e => e.Status.Equals("disponibil", StringComparison.OrdinalIgnoreCase))
+            );
+
+            SendToMaintenanceCommand = new RelayCommand<Equipments>(SendToMaintenance);
             SaveCommand = new RelayCommand(SaveChanges);
         }
 
         private void SendToMaintenance(Equipments equipment)
         {
+            //if (CurrentUser == null)
+            //{
+            //    MessageBox.Show("No user logged in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return;
+            //}
+            if (_maintenanceRecordRepository == null)
+            {
+                MessageBox.Show("Maintenance record repository not initialized", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (equipment == null) return;
             equipment.Status = "indisponibil";
             UpdateEquipmentInDatabase(equipment);
-            availableEquipments.Remove(equipment);
+            AvailableEquipments.Remove(equipment);
+            _notificationService.HasNewMaintenance = true;
 
-            (new MaintenanceRecord()).AddMaintenanceRecord(
+
+            _maintenanceRecordRepository.AddMaintenanceRecord(
                     new MaintenanceRecord
                     {
                         EquipmentId = equipment.Id,
+                        Equipment = equipment,
                         Date = DateTime.Now,
                         Description = "Sent to maintenance",
                         PerformedBy = CurrentUser
@@ -82,12 +105,16 @@ namespace Proiect_ABD.View_Model
 
         private ObservableCollection<Equipments> GetAvailableEquipments()
         {
-            return new ObservableCollection<Equipments>(EquipmentList.Where(e => e.Status == "disponibil"));
+            return new ObservableCollection<Equipments>(
+                EquipmentList.Where(e => e.Status.Equals("disponibil", StringComparison.OrdinalIgnoreCase))
+            );
         }
 
         private ObservableCollection<Equipments> GetUnavailableEquipments()
         {
-            return new ObservableCollection<Equipments>(EquipmentList.Where(e => e.Status == "indisponibil"));
+            return new ObservableCollection<Equipments>(
+                EquipmentList.Where(e => e.Status.Equals("indisponibil", StringComparison.OrdinalIgnoreCase))
+            );
         }
 
         private void SaveChanges()
@@ -101,20 +128,7 @@ namespace Proiect_ABD.View_Model
 
         private void UpdateEquipmentInDatabase(Equipments equipment)
         {
-            // Logic to update equipment in the database
-            // For example, using Entity Framework or ADO.NET
-            var context = new Proiect_ABDDataContext();
-            var dbEquipment = context.Equipments.FirstOrDefault(e => e._id == equipment.Id);
-            if (dbEquipment != null)
-            {
-                if (dbEquipment._name != equipment.Name || dbEquipment._status != equipment.Status)
-                {
-                    dbEquipment._name = equipment.Name;
-                    dbEquipment._status = equipment.Status;
-                    dbEquipment._last_update = DateTime.Now;
-                }
-                context.SubmitChanges();
-            }
+            _equipmentRepository.UpdateEquipment(equipment);
         }
     }
 }

@@ -1,15 +1,18 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Proiect_ABD.Model;
 using Proiect_ABD.View;
+using Proiect_ABD.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+
 
 namespace Proiect_ABD.View_Model
 {
     public class ChangePasswordViewModel : ViewModelBase
     {
         private readonly Users _user;
+        private readonly UsersRepository _usersRepository;
         private string _oldPassword;
         private string _newPassword;
         private string _confirmPassword;
@@ -25,7 +28,6 @@ namespace Proiect_ABD.View_Model
                 OnPropertyChanged(nameof(OldPassword));
             }
         }
-
         public string NewPassword
         {
             get => _newPassword;
@@ -35,7 +37,6 @@ namespace Proiect_ABD.View_Model
                 OnPropertyChanged(nameof(NewPassword));
             }
         }
-
         public string ConfirmPassword
         {
             get => _confirmPassword;
@@ -45,14 +46,13 @@ namespace Proiect_ABD.View_Model
                 OnPropertyChanged(nameof(ConfirmPassword));
             }
         }
-
-        public ChangePasswordViewModel(Users user)
+        public ChangePasswordViewModel(Users user, UsersRepository usersRepository)
         {
             _user = user;
+            _usersRepository = usersRepository;
             ChangePasswordCommand = new RelayCommand(ExecuteChangePassword, CanExecuteChangePassword);
             CancelCommand = new RelayCommand(ExecuteCancel);
         }
-
         private bool CanExecuteChangePassword()
         {
             return !string.IsNullOrEmpty(_oldPassword) &&
@@ -60,31 +60,27 @@ namespace Proiect_ABD.View_Model
                    !string.IsNullOrEmpty(_confirmPassword) &&
                    _newPassword == _confirmPassword;
         }
-
+        
         private void ExecuteChangePassword()
         {
-            using (var context = new Proiect_ABDDataContext())
+            var dbUser = _usersRepository.GetUserById(_user.Id);
+            if (dbUser != null)
             {
-                var dbUser = context.Users.FirstOrDefault(u => u._id == _user.Id);
-                if (dbUser != null)
+                string hashedOldPassword = Users.HashPassword(_oldPassword);
+
+                if (dbUser.Password == hashedOldPassword)
                 {
+                    dbUser.Password = Users.HashPassword(_newPassword);
+                    _usersRepository.UpdateUser(dbUser);
 
-                    string hashedPassword = Users.HashPassword(_oldPassword);
-
-
-                    if (dbUser._password == hashedPassword)
-                    {
-                        dbUser._password = Users.HashPassword(_newPassword);
-                        context.SubmitChanges();
-                        MessageBox.Show("Password changed successfully!", "Success",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
-                        CloseWindow();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Old password is incorrect!", "Error",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    MessageBox.Show("Password changed successfully!", "Success",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    CloseWindow();
+                }
+                else
+                {
+                    MessageBox.Show("Old password is incorrect!", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Proiect_ABD.Model;
+using Proiect_ABD.Utils;
 using Proiect_ABD.View_Model;
+using Proiect_ABD.Data;
 
 namespace Proiect_ABD.Utils
 {
@@ -56,10 +58,12 @@ namespace Proiect_ABD.Utils
                 case "LoginView":
                     return new LoginView();
                 case "DashboardView":
-                    var dashboardView = new DashboardView
-                    {
-                        DataContext = new DashboardViewModel(CurrentUser)
-                    };
+                    var userRepository = new UsersRepository();
+                    var rolesRepository = new RolesRepository();
+                    var notificationService = new NotificationService();
+                    var viewModelFactory = new ViewModelFactory(userRepository, rolesRepository, notificationService); // Declare before using
+                    var dashboardView = new DashboardView();
+                    dashboardView.DataContext = new DashboardViewModel(CurrentUser, notificationService, viewModelFactory);
                     return dashboardView;
                 default:
                     return null;

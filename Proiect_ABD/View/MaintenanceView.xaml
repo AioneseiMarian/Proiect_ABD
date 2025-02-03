@@ -9,15 +9,13 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MaintenanceView">
 
-    <Page.DataContext>
+    <!--<Page.DataContext>
         <vm:MaintenanceViewModel />
-    </Page.DataContext>
+    </Page.DataContext>-->
 
     <Grid Background="#ededed" Margin="20">
-        <!-- Label at the top-left with large font -->
         <TextBlock Text="Maintenance" FontSize="36" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" FontFamily="Microsoft Sans Serif" />
 
-        <!-- Header-ul -->
         <Grid DockPanel.Dock="Top" Height="50" Margin="0,60,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5*" />
@@ -41,7 +39,6 @@
 
         <Border Height="4" Background="#960000" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="15,56,10,0" />
 
-        <!-- ListBox-ul fullscreen -->
         <ListBox ItemsSource="{Binding MaintenanceList}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="15,60,10,50">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -53,24 +50,20 @@
                             <ColumnDefinition Width="1.5*" />
                         </Grid.ColumnDefinitions>
 
-                        <!-- Name (Editable) -->
                         <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
-                            <TextBox Text="{Binding Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" Background="#e2e2e2" FontSize="16" Padding="5"/>
+                            <TextBox Text="{Binding Equipment.Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" Background="#e2e2e2" FontSize="16" Padding="5"/>
                         </Border>
 
-                        <!-- Status with Button -->
                         <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button Content="Marcheaza ca reparat" Margin="5,0" Command="{Binding DataContext.SendToMainPage, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}" Background="#c7c7c7" Foreground="Black" BorderBrush="#c4c4c4" BorderThickness="2" Padding="8,4" FontSize="14"/>
                             </StackPanel>
                         </Border>
 
-                        <!-- Performed by (Editable) -->
                         <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
                             <TextBox Text="{Binding PerformedBy.Name}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" Background="#e2e2e2" FontSize="16" Padding="5"/>
                         </Border>
 
-                        <!-- Last Update -->
                         <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0,0,1,0" Margin="5,0" Background="#f7f7f7">
                             <TextBlock Text="{Binding Date}" VerticalAlignment="Center" TextAlignment="Center" Margin="5,0" FontSize="16"/>
                         </Border>
@@ -79,7 +72,6 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <!-- Save Button -->
         <!--<Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Background="#960000" Foreground="White" BorderBrush="#c4c4c4" BorderThickness="2" Padding="10,5" Width="112" FontSize="16"/>-->
     </Grid>
 </Page>

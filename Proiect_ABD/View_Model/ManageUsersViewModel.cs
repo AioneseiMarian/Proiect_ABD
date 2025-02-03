@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Proiect_ABD.Data;
 using Proiect_ABD.Model;
+using Proiect_ABD.Utils;
 using Proiect_ABD.View;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,6 +12,10 @@ namespace Proiect_ABD.View_Model
 {
     public class ManageUsersViewModel : ViewModelBase
     {
+        private readonly UsersRepository _usersRepository;
+        private readonly RolesRepository _rolesRepository;
+        private readonly NotificationService _notificationService;
+
         private ObservableCollection<Users> _usersList;
         public ObservableCollection<Users> UsersList
         {
@@ -22,6 +28,9 @@ namespace Proiect_ABD.View_Model
         }
 
         public ICommand SaveCommand { get; }
+        public ICommand ChangePasswordCommand { get; }
+        public ICommand DeleteUserCommand { get; }
+        public ICommand AddUserCommand { get; }
 
         private ObservableCollection<Roles> rolesList;
         public ObservableCollection<Roles> RolesList
@@ -33,15 +42,18 @@ namespace Proiect_ABD.View_Model
                 OnPropertyChanged(nameof(RolesList));
             }
         }
-        public ManageUsersViewModel()
+        public ManageUsersViewModel(UsersRepository usersRepository, RolesRepository rolesRepository, NotificationService notificationService)
         {
-            UsersList = (new Users()).GetAllUsers();
-            RolesList = new Roles().GetAllRoles();
+            _notificationService = notificationService;
+            _usersRepository = usersRepository;
+            _rolesRepository = rolesRepository;
+
+            UsersList = new ObservableCollection<Users>(_usersRepository.GetAllUsers());
+            RolesList = new ObservableCollection<Roles>(_rolesRepository.GetAllRoles());
             SaveCommand = new RelayCommand(SaveChanges);
             ChangePasswordCommand = new RelayCommand<Users>(ChangePassword);
             DeleteUserCommand = new RelayCommand<Users>(DeleteUser);
             AddUserCommand = new RelayCommand(OpenAddUserWindow);
-
         }
 
         private void SaveChanges()
@@ -56,28 +68,15 @@ namespace Proiect_ABD.View_Model
 
         private void UpdateUserInDatabase(Users user)
         {
-            var context = new Proiect_ABDDataContext();
-            var dbUser = context.Users.FirstOrDefault(u => u._id == user.Id);
-            if (dbUser != null)
-            {
-                dbUser._name = user.Name;
-                dbUser._role_id = user.Role.Id;
-                context.SubmitChanges();
-            }
+            _usersRepository.UpdateUser(user);
         }
-
-        public ICommand ChangePasswordCommand { get; }
-        public ICommand DeleteUserCommand { get; }
-        public ICommand AddUserCommand { get; }
-
-
         private void ChangePassword(Users user)
         {
             if (user != null)
             {
                 var changePasswordWindow = new ChangePasswordView
                 {
-                    DataContext = new ChangePasswordViewModel(user)
+                    DataContext = new ChangePasswordViewModel(user, _usersRepository)
                 };
 
                 changePasswordWindow.ShowDialog();
@@ -90,32 +89,24 @@ namespace Proiect_ABD.View_Model
             {
                 UsersList.Remove(user);
                 MessageBox.Show($"User {user.Name} deleted.");
-                (new Users()).DeleteUser(user);
+                _usersRepository.DeleteUser(user.Id); // Using repository method to delete
             }
         }
-
-
-
-
         private void OpenAddUserWindow()
         {
             var addUserWindow = new AddUserView
             {
                 DataContext = new AddUserViewModel()
             };
-
             if (addUserWindow.ShowDialog() == true)
             {
                 var viewModel = (AddUserViewModel)addUserWindow.DataContext;
                 if (viewModel.NewUser != null)
                 {
                     UsersList.Add(viewModel.NewUser);
+                    _notificationService.HasNewUsers = true;
                 }
             }
         }
-
-
-
-
     }
 }

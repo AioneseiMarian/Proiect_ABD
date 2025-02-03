@@ -7,10 +7,8 @@
         Background="#2e2e2e" Foreground="White">
 
     <DockPanel>
-        <!-- Sectiunea de butoane in partea stanga -->
         <Border DockPanel.Dock="Left" Background="#2e2e2e" Width="200" BorderBrush="#960000" BorderThickness="0,0,2,0">
-            <StackPanel Margin="10">
-                <!-- Style for Buttons -->
+            <StackPanel Margin="10,0,10,10">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#3b3b3b" />
@@ -21,11 +19,9 @@
                         <Setter Property="Padding" Value="10" />
                         <Setter Property="Margin" Value="0,5,0,5" />
                         <Style.Triggers>
-                            <!-- Hover Effect -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#960000" />
                             </Trigger>
-                            <!-- Selected Option Effect -->
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Background" Value="#960000" />
                                 <Setter Property="BorderBrush" Value="White" />
@@ -34,18 +30,49 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <!-- Buttons -->
-                <Button Content="Echipamente" Command="{Binding NavigateCommand}" CommandParameter="EquipmentView" />
-                <Button Content="Mentenanță" Command="{Binding NavigateCommand}" CommandParameter="MaintenanceView" 
-                        Visibility="{Binding CanViewMaintenance, Converter={StaticResource BoolToVisibilityConverter}}" />
-                <Button Content="Gestionare Utilizatori" 
-                        Command="{Binding NavigateCommand}" CommandParameter="ManageUsersView" 
-                        Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,20">
+                    <Image Height="50" Width="50" Source="C:\Users\catal\Source\Repos\Proiect_ABD\Proiect_ABD\Resources\icons8-user-48.png" Stretch="Uniform" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding CurrentUser.Name}" FontSize="16" FontWeight="Bold" Foreground="White" TextAlignment="Center"/>
+                    <TextBlock Text="{Binding CurrentUser.Role.Name}" FontSize="14" Foreground="LightGray" TextAlignment="Center"/>
+                </StackPanel>
+
+                <Button Command="{Binding NavigateCommand}" CommandParameter="EquipmentView">
+                    <Button.Content>
+                        <StackPanel>
+                            <TextBlock Text="Echipamente" />
+                            <Ellipse Width="8" Height="8" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                     Visibility="{Binding IsEquipmentModified, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <Button Command="{Binding NavigateCommand}" CommandParameter="MaintenanceView"
+                        Visibility="{Binding CanViewMaintenance, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Button.Content>
+                        <StackPanel>
+                            <TextBlock Text="Mentenanță" />
+                            <Ellipse Width="8" Height="8" Fill="Red" HorizontalAlignment="Left"
+                                     Visibility="{Binding IsMaintenanceModified, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Top" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <Button Command="{Binding NavigateCommand}" CommandParameter="ManageUsersView"
+                        Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Button.Content>
+                        <StackPanel>
+                            <TextBlock Text="Gestionare Utilizatori" />
+                            <Ellipse Width="8" Height="8" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                     Visibility="{Binding IsUserModified, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <!-- Deconectare Button -->
                 <Button Content="Deconectare" Command="{Binding LogoutCommand}" />
             </StackPanel>
         </Border>
 
-        <!-- Sectiunea principala cu echipamente -->
         <ScrollViewer DockPanel.Dock="Right" Background="White">
             <Grid>
                 <Grid.RowDefinitions>

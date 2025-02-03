@@ -1,4 +1,5 @@
-﻿using Proiect_ABD.Utils;
+﻿using Proiect_ABD.Data;
+using Proiect_ABD.Utils;
 using Proiect_ABD.View_Model;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,8 @@ namespace Proiect_ABD.View
                 NavigationClass.ActiveWindow = this;
                 IsAppStart = false;
             }
-
-            DataContext = new LoginViewModel();
+            var usersRepository = new UsersRepository();
+            DataContext = new LoginViewModel(usersRepository);
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

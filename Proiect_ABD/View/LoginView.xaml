@@ -5,38 +5,29 @@
         Title="Equipment Manag" Height="550" Width="900"
         WindowStartupLocation="CenterScreen"
         Background="#2e2e2e" Foreground="White">
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:LoginViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <Grid>
         <Grid.ColumnDefinitions>
-            <!-- Banda roșie verticală -->
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Dungă roșie -->
         <Border Background="#700000" Grid.Column="0" />
 
-        <!-- Conținut -->
         <Grid Grid.Column="1" Margin="20">
             <Grid.RowDefinitions>
-                <!-- Titlu -->
                 <RowDefinition Height="Auto"/>
-                <!-- Linie roșie -->
                 <RowDefinition Height="Auto"/>
-                <!-- Layout Grid pentru Username, Password, Button -->
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Titlu -->
             <TextBlock Text="Equipment Management" FontSize="36" FontWeight="Bold" Foreground="White"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Margin="0,15,0,5"/>
 
-            <!-- Linie roșie sub titlu -->
             <Border Background="#700000" Height="2" Grid.Row="1" Margin="50,0,50,10" />
 
-            <!-- Layout Grid -->
             <Grid Grid.Row="2" Margin="0,20,0,0" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -48,7 +39,6 @@
                     <ColumnDefinition Width="315.823"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Username -->
                 <Label x:Name="lbl_username" Content="Username:" 
                        FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"
                        Foreground="White" Grid.Row="0" Grid.Column="0"/>
@@ -56,7 +46,6 @@
                          Grid.Row="0" Grid.Column="1" Margin="0,10,0,10" Width="306" HorizontalAlignment="Left" 
                          FontSize="24" Background="#4a4a4a" Foreground="White" BorderBrush="#c4c4c4" BorderThickness="2"/>
 
-                <!-- Password -->
                 <Label x:Name="lbl_password" Content="Password:" 
                        FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"
                        Foreground="White" Grid.Row="1" Grid.Column="0"/>
@@ -65,7 +54,6 @@
                              BorderBrush="#c4c4c4" BorderThickness="2"
                              PasswordChanged="PasswordBox_PasswordChanged"/>
 
-                <!-- Buton -->
                 <Button x:Name="lbl_login" Content="Login" Command="{Binding LoginCommand}" 
                         Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
                         Width="110" FontSize="18" Background="#3b3b3b" Foreground="White" 

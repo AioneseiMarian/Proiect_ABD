@@ -8,12 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Proiect_ABD.Data;
+using Proiect_ABD.Utils;
 
 
 namespace Proiect_ABD.View_Model
 {
     public class MaintenanceViewModel
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private Users user;
         public Users User
         {
@@ -21,14 +29,6 @@ namespace Proiect_ABD.View_Model
             set
             {
                 user = value;
-            }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -39,17 +39,24 @@ namespace Proiect_ABD.View_Model
             set
             {
                 maintenanceList = value;
-                OnPropertyChanged("MaintenanceList");
+                OnPropertyChanged(nameof(MaintenanceList));
             }
         }
         public ICommand SendToMainPage { get; }
 
-
-        public MaintenanceViewModel() : this(null) { }
-        public MaintenanceViewModel(Users user)
+        private readonly MaintenanceRecordRepository _maintenanceRepo;
+        private readonly EquipmentRepository _equipmentRepo;
+        private readonly NotificationService _notificationService;
+        public MaintenanceViewModel() : this(null, null) { }
+        public MaintenanceViewModel(Users user, NotificationService notificationService)
         {
-            this.user = user;
-            MaintenanceList = (new MaintenanceRecord()).GetAllMaintenanceRecords();
+            User = user;
+
+            _maintenanceRepo = new MaintenanceRecordRepository();
+            _equipmentRepo = new EquipmentRepository();
+            _notificationService = notificationService;
+
+            MaintenanceList = new ObservableCollection<MaintenanceRecord>(_maintenanceRepo.GetAllMaintenanceRecords());
             SendToMainPage = new RelayCommand<MaintenanceRecord>(SendToMainPageExecute);
         }
 
@@ -57,27 +64,22 @@ namespace Proiect_ABD.View_Model
 
         void RemoveMaintenanceRecord(MaintenanceRecord maintenanceRecord)
         {
-            (new MaintenanceRecord()).RemoveFromMaintenanceRecord(maintenanceRecord);
+            _maintenanceRepo.RemoveMaintenanceRecord(maintenanceRecord);
             MaintenanceList.Remove(maintenanceRecord);
         }
 
         void SendToMainPageExecute(MaintenanceRecord maintenanceRecord)
         {
-            Equipments eq = (new Equipments()).GetEquipmentById(maintenanceRecord.EquipmentId);
-            eq.Status = "disponibil";
-
-            var context = new Proiect_ABDDataContext();
-            var dbEquipment = context.Equipments.FirstOrDefault(e => e._id == eq.Id);
-            if (dbEquipment != null)
+            if (maintenanceRecord == null)
+                return;
+            Equipments eq = _equipmentRepo.GetEquipmentById(maintenanceRecord.EquipmentId);
+            if (eq != null)
             {
-                if (dbEquipment._name != eq.Name || dbEquipment._status != eq.Status)
-                {
-                    dbEquipment._name = eq.Name;
-                    dbEquipment._status = eq.Status;
-                    dbEquipment._last_update = DateTime.Now;
-                }
-                context.SubmitChanges();
+                eq.Status = "disponibil";
+
+                _equipmentRepo.UpdateEquipment(eq);
             }
+            _notificationService.HasNewEquipment = true;
             RemoveMaintenanceRecord(maintenanceRecord);
         }
     }

@@ -11,13 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using Proiect_ABD.Utils;
 using Proiect_ABD.View_Model;
 
 namespace Proiect_ABD.View
 {
     public partial class DashboardView : Window
     {
+        internal ViewModelFactory viewModelFactory;
+
         public DashboardView()
         {
             InitializeComponent();
